@@ -68,6 +68,23 @@ const userStorage = multer.diskStorage({
 
 var uploadUserStorage = multer({ storage: userStorage }).single('image');
 
+const lotStorage = multer.diskStorage({
+	destination: './client/public/uploads/lots/',
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+	}
+});
+
+var uploadLotStorage = multer({ storage: lotStorage }).single('image');
+
+const transactionStorage = multer.diskStorage({
+	destination: './client/public/uploads/proofOfPayments/',
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + 'Proof' + '-' + Date.now() + path.extname(file.originalname));
+	}
+});
+
+var uploadTransactionStorage = multer({ storage: transactionStorage }).single('image');
 // ─── USER SIDE ──────────────────────────────────────────────────────────────────
 
 app.post('/register', (req, res) => {
@@ -140,6 +157,22 @@ app.put('/user/:id', (req, res) => {
 			);
 		}
 	});
+});
+
+app.put('/user/password/:id', (req, res) => {
+	User.findByIdAndUpdate(
+		req.params.id,
+		{
+			password: req.body.password
+		},
+		(err, data) => {
+			try {
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	);
 });
 
 //
@@ -289,6 +322,6 @@ app.delete('/admin/user/:id', (req, res) => {
 });
 
 // ────────────────────────────────────────────────────────────────────────────────
-app.listen('2020', () => {
+app.listen(2020, () => {
 	console.log('Server is walking');
 });
