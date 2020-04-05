@@ -72,10 +72,10 @@ export default class Dashboard extends Component {
                                             <div className='card-body-icon'>
                                                 <i className='fa fa-fw fa-comments' />
                                             </div>
-                                            <div className='mr-5'>Sparepart Table Data</div>
+                                            <div className='mr-5'>Lot Table Data</div>
                                         </div>
-                                        <a className='card-footer text-white clearfix small z-1' href='/sparepart'>
-                                            <span className='float-left'>View Spareparts</span>
+                                        <a className='card-footer text-white clearfix small z-1' href='/lot'>
+                                            <span className='float-left'>View Lots</span>
                                             <span className='float-right'>
                                                 <i className='fa fa-angle-right' />
                                             </span>
@@ -106,7 +106,7 @@ export default class Dashboard extends Component {
                                             </div>
                                             <div className='mr-5'>There's new Employee!</div>
                                         </div>
-                                        <a className='card-footer text-white clearfix small z-1' href='/employee-acceptance'>
+                                        <a className='card-footer text-white clearfix small z-1' href='/users'>
                                             <span className='float-left'>Check Employee Registrations</span>
                                             <span className='float-right'>
                                                 <i className='fa fa-angle-right' />

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios';
 import Logo from '../res/faze clan.png'
 export default class BookedLot extends Component {
     constructor() {

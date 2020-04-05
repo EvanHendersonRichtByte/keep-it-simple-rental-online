@@ -238,14 +238,23 @@ app.delete('/rent/:id', (req, res) => {
 // ───────────────────────────────────────────────────────── LOT MANIPULATION ─────
 //
 app.post('/lot', (req, res) => {
-	Lot.create({
-		title: req.body.title,
-		location: req.body.location,
-		description: req.body.description,
-		contact: req.body.contact,
-		price: req.body.price,
-		status: req.body.status
-	});
+	uploadLotStorage(req, res, (err) => {
+		Lot.create({
+			title: req.body.title,
+			location: req.body.location,
+			description: req.body.description,
+			contact: req.body.contact,
+			price: req.body.price,
+			status: req.body.status,
+			image: req.file.filename
+		}, (err, data) => {
+			try {
+				console.log(data)
+			} catch (error) {
+				console.log(error)
+			}
+		});
+	})
 });
 
 app.get('/lot', (req, res) => {
@@ -259,24 +268,27 @@ app.get('/lot', (req, res) => {
 });
 
 app.put('/lot/:id', (req, res) => {
-	Lot.findByIdAndUpdate(
-		req.params.id,
-		{
-			title: req.body.title,
-			location: req.body.location,
-			description: req.body.description,
-			contact: req.body.contact,
-			price: req.body.price,
-			status: req.body.status
-		},
-		(err, updatedLot) => {
-			try {
-				res.send(updatedLot);
-			} catch (error) {
-				console.log(error);
+	uploadLotStorage(req, res, (err) => {
+		Lot.findByIdAndUpdate(
+			req.params.id,
+			{
+				title: req.body.title,
+				location: req.body.location,
+				description: req.body.description,
+				contact: req.body.contact,
+				price: req.body.price,
+				status: req.body.status,
+				image: req.file.filename
+			},
+			(err, updatedLot) => {
+				try {
+					res.send(updatedLot);
+				} catch (error) {
+					console.log(error);
+				}
 			}
-		}
-	);
+		);
+	})
 });
 
 app.delete('/lot/:id', (req, res) => {

@@ -10,6 +10,8 @@ import BookedLot from './client/BookedLot';
 import Navbar from './components/Navbar'
 // ────────────────────────────────────────────────────────────────────────────────
 import Dashboard from './delta/Dashboard'
+import Lot from './delta/Lot'
+import Users from './delta/Users'
 function App() {
 	return (
 		<Router>
@@ -22,6 +24,8 @@ function App() {
 				<Route path='/booked-lot' component={BookedLot} />
 
 				<Route path='/dashboard' component={Dashboard} />
+				<Route path='/lot' component={Lot} />
+				<Route path='/users' component={Users} />
 			</Switch>
 		</Router>
 	);

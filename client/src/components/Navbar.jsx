@@ -38,20 +38,42 @@ const Navbar = () => {
 		let role = localStorage.getItem('Role');
 		let _id = localStorage.getItem('_id');
 		if (role && _id) {
-			return (
-				<Fragment>
-					<li className='nav-item'>
-						<Link className='nav-link' to='/profile'>
-							My profile
-						</Link>
-					</li>
-					<li className='nav-item'>
-						<Link onClick={handleLogout} className='nav-link' to='/login'>
-							Logout
-						</Link>
-					</li>
-				</Fragment>
-			);
+			if (JSON.parse(role) === "User") {
+				return (
+					<Fragment>
+						<li className='nav-item'>
+							<Link className='nav-link' to='/profile'>
+								My profile
+							</Link>
+						</li>
+						<li className='nav-item'>
+							<Link onClick={handleLogout} className='nav-link' to='/login'>
+								Logout
+							</Link>
+						</li>
+					</Fragment>
+				);
+			} else {
+				return (
+					<Fragment>
+						<li className='nav-item'>
+							<Link className='nav-link text-danger' to='/dashboard'>
+								Dashboard
+							</Link>
+						</li>
+						<li className='nav-item'>
+							<Link className='nav-link' to='/profile'>
+								My profile
+							</Link>
+						</li>
+						<li className='nav-item'>
+							<Link onClick={handleLogout} className='nav-link' to='/login'>
+								Logout
+							</Link>
+						</li>
+					</Fragment>
+				)
+			}
 		} else {
 			return (
 				<li className='nav-item'>
