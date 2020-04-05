@@ -29,9 +29,13 @@ export default class Login extends Component {
 			.then((res) => {
 				console.log(res.data);
 				if (res.data) {
-					window.location.assign('/');
 					localStorage.setItem('_id', JSON.stringify(res.data._id));
 					localStorage.setItem('Role', JSON.stringify(res.data.role));
+					if (res.data.role === "User") {
+						window.location.assign('/')
+					} else if (res.data.role === "Admin") {
+						window.location.assign('/dashboard')
+					}
 				} else {
 					alert('Invalid username or password');
 				}

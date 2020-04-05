@@ -47,7 +47,7 @@ const Lot = mongoose.model('Lot', LotSchema);
 
 const TransactionSchema = new mongoose.Schema({
 	userId: String,
-	rents: { LotSchema },
+	rentedLot: { LotSchema },
 	total: Number,
 	status: String,
 	image: String
@@ -61,7 +61,7 @@ const Transaction = mongoose.model('Transaction', TransactionSchema);
 
 const userStorage = multer.diskStorage({
 	destination: './client/public/uploads/users/',
-	filename: function(req, file, cb) {
+	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
 });
@@ -70,7 +70,7 @@ var uploadUserStorage = multer({ storage: userStorage }).single('image');
 
 const lotStorage = multer.diskStorage({
 	destination: './client/public/uploads/lots/',
-	filename: function(req, file, cb) {
+	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
 });
@@ -79,14 +79,16 @@ var uploadLotStorage = multer({ storage: lotStorage }).single('image');
 
 const transactionStorage = multer.diskStorage({
 	destination: './client/public/uploads/proofOfPayments/',
-	filename: function(req, file, cb) {
+	filename: function (req, file, cb) {
 		cb(null, file.fieldname + 'Proof' + '-' + Date.now() + path.extname(file.originalname));
 	}
 });
 
 var uploadTransactionStorage = multer({ storage: transactionStorage }).single('image');
 // ─── USER SIDE ──────────────────────────────────────────────────────────────────
-
+//
+// ───────────────────────────────────────────────────────────────────── AUTH ─────
+//
 app.post('/register', (req, res) => {
 	User.create(
 		{
@@ -174,6 +176,59 @@ app.put('/user/password/:id', (req, res) => {
 		}
 	);
 });
+
+//
+// ───────────────────────────────────────────────────────── RENT ASSIGNMENTS ─────
+//
+
+app.post('/rent', (req, res) => {
+	Transaction.create({
+		userId: req.body.userId,
+		rentedLot: req.body.rentedLot,
+		total: req.body.total,
+		status: req.body.status,
+	})
+}, (req, data) => {
+	try {
+		console.log(data)
+	} catch (error) {
+		console.log(error)
+	}
+})
+
+app.get('/rent/user/:id', (req, res) => {
+	Transaction.findOne({ userId: req.params.id }, (err, transaction) => {
+		try {
+			res.send(transaction)
+		} catch (error) {
+			console.log(error)
+		}
+	})
+})
+
+app.put('/rent/:id', (req, res) => {
+	uploadTransactionStorage(req, res, (err) => {
+		Transaction.findByIdAndUpdate(req.params.id, {
+			image: req.file.filename
+		}, (err, update) => {
+			try {
+				console.log(update)
+			} catch (error) {
+				console.log(error)
+			}
+		})
+	})
+})
+
+app.delete('/rent/:id', (req, res) => {
+	Transaction.findOneAndDelete(req.params.id, (err, deleted) => {
+		try {
+			console.log(deleted)
+		} catch (error) {
+			console.log(error)
+		}
+	})
+})
 
 //
 // ─── ADMIN SIDE ─────────────────────────────────────────────────────────────────

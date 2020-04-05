@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import Navbar from '../components/Navbar';
 export default class Profile extends Component {
 	constructor() {
 		super();
@@ -30,6 +29,10 @@ export default class Profile extends Component {
 
 	componentDidMount() {
 		this.handleUserProfile();
+	}
+
+	componentDidUpdate() {
+		localStorage.setItem('Image', JSON.stringify(this.state.image))
 	}
 
 	handleUserProfile() {
@@ -100,14 +103,13 @@ export default class Profile extends Component {
 			.put('/user/' + JSON.parse(localStorage.getItem('_id')), formData, config)
 			.then((res) => {
 				alert('Your profile has been updated!');
-				window.location.assign('/profile');
+				window.location.assign('/');
 			})
 			.catch((err) => console.log(err));
 	}
 	render() {
 		return (
 			<Fragment>
-				<Navbar />
 				<div className='container'>
 					<div className='row'>
 						<div className='col-md-4 text-center'>

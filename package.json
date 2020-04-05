@@ -12,7 +12,10 @@
 		"type": "git",
 		"url": "git+https://github.com/EvanHendersonRichtByte/keep-it-simple-rental-online.git"
 	},
-	"keywords": [ "rental", "online" ],
+	"keywords": [
+		"rental",
+		"online"
+	],
 	"author": "Evan Henderson",
 	"license": "ISC",
 	"bugs": {

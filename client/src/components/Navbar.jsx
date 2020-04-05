@@ -6,6 +6,34 @@ const Navbar = () => {
 		localStorage.clear();
 	};
 
+	const isAdded = () => {
+		let image = localStorage.getItem('Image')
+		if (image) {
+			image = JSON.parse(image)
+			return (
+				<li className='nav-item'>
+					<img
+						className='border rounded-circle border-danger'
+						style={{ width: '40px', height: '40px' }}
+						src={`${process.env.PUBLIC_URL}/uploads/users/${image}`}
+						alt='okok'
+					/>
+				</li>
+			)
+		} else {
+			return (
+				<li className='nav-item'>
+					<img
+						className='border rounded-circle border-danger'
+						style={{ width: '40px', height: '40px' }}
+						src={Logo}
+						alt='okok'
+					/>
+				</li>
+			)
+		}
+	}
+
 	const isLogged = () => {
 		let role = localStorage.getItem('Role');
 		let _id = localStorage.getItem('_id');
@@ -57,9 +85,9 @@ const Navbar = () => {
 						</a>
 					</li>
 					<li className='nav-item'>
-						<a className='nav-link' href='/'>
+						<Link className='nav-link' to='/booked-lot'>
 							Booked Lot
-						</a>
+						</Link>
 					</li>
 					<li className='nav-item'>
 						<form className='form-inline'>
@@ -73,14 +101,7 @@ const Navbar = () => {
 
 				<ul className='navbar-nav'>
 					{isLogged()}
-					<li className='nav-item'>
-						<img
-							className='border rounded-circle border-danger'
-							style={{ width: '40px', height: '40px' }}
-							src={Logo}
-							alt='okok'
-						/>
-					</li>
+					{isAdded()}
 				</ul>
 			</div>
 		</nav>

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import Navbar from '../components/Navbar';
 import { Carousel } from 'react-bootstrap';
 import Picture1 from '../res/Moonlit.jpg';
 import Picture2 from '../res/Raspberry.jpg';
@@ -27,7 +26,6 @@ export default class Index extends Component {
 	render() {
 		return (
 			<Fragment>
-				<Navbar />
 				<Carousel>
 					<Carousel.Item>
 						<img style={{ height: '400px' }} className='d-block w-100' src={Picture1} alt='First slide' />
