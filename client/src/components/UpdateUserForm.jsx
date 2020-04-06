@@ -60,6 +60,7 @@ export default class UpdateUserForm extends Component {
     }
 
     handleFormSubmit(e) {
+        console.log(this.state)
         e.preventDefault();
         let formData = new FormData();
         formData.append('username', this.state.username);
@@ -76,7 +77,7 @@ export default class UpdateUserForm extends Component {
         formData.append('status', this.state.status);
         formData.append('image', this.state.image);
         const config = { headers: { 'content-type': 'multipart/form-data' } };
-        axios.post('/admin/user/' + this.state._id, formData, config).then(res => {
+        axios.put('/admin/user/' + this.state._id, formData, config).then(res => {
             window.location.assign('/users')
         }).catch((err) => console.log(err));
     }

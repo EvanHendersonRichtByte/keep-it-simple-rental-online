@@ -15,6 +15,10 @@ export default class Lot extends Component {
         }
     }
 
+    componentDidUpdate() {
+        console.log(this.state)
+    }
+
     componentDidMount() {
         this.handleLotData()
     }
@@ -28,7 +32,7 @@ export default class Lot extends Component {
     }
 
     handleUpdateModalStatus(_id) {
-        this.setState({ updateModalStatus: !this.state.updateModalStatus })
+        this.setState({ updateDataId: _id, updateModalStatus: !this.state.updateModalStatus })
     }
 
     handleDeleteLot(_id) {

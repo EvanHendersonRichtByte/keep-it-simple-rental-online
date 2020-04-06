@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import AddUserForm from '../components/AddUserForm'
 import UpdateUserForm from '../components/UpdateUserForm'
 import axios from 'axios'
-export default class Lot extends Component {
+export default class Users extends Component {
     constructor() {
         super()
         this.handleModalStatus = this.handleModalStatus.bind(this)
@@ -16,10 +16,10 @@ export default class Lot extends Component {
     }
 
     componentDidMount() {
-        this.handleLotData()
+        this.handleUserData()
     }
 
-    handleLotData() {
+    handleUserData() {
         axios.get('/admin/user').then(res => this.setState({ users: res.data })).catch(err => console.log(err))
     }
 
@@ -32,7 +32,7 @@ export default class Lot extends Component {
         console.log(this.state)
     }
 
-    handleDeleteLot(_id) {
+    handleDeleteUser(_id) {
         axios.delete('/admin/user/' + _id).then(window.location.assign('/users')).catch(err => console.log(err))
     }
 
@@ -70,7 +70,7 @@ export default class Lot extends Component {
                                     <td>{item.zip ? <span>{item.zip}</span> : <span>Haven't setup</span>}</td>
                                     <td className="text-center"><img style={{ height: "120px" }} alt={item._id + "Preview"} src={`${process.env.PUBLIC_URL}/uploads/users/${item.image}`} /></td>
                                     <td><button className="btn btn-outline-primary" onClick={() => this.handleUpdateModalStatus(item._id)}>Edit Data</button>
-                                        <button className="btn btn-outline-danger" onClick={() => this.handleDeleteLot(item._id)}>Delete Data</button></td>
+                                        <button className="btn btn-outline-danger" onClick={() => this.handleDeleteUser(item._id)}>Delete Data</button></td>
                                 </tr>
                             )
                         })}

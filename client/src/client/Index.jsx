@@ -14,6 +14,7 @@ export default class Index extends Component {
 	}
 	componentDidMount() {
 		this.handleLotData();
+		console.log(this.state)
 	}
 	handleLotData() {
 		axios
@@ -68,16 +69,24 @@ export default class Index extends Component {
 					</div>
 				</div>
 				<div className='row'>
-					<div className='col-md-3'>
-						<div className='card text-left'>
-							<img className='card-img-top' src={Picture2} alt='kwkwkw' />
-							<div className='card-body'>
-								<h4 className='card-title'>Lapangan Voli</h4>
-								<p className='card-text'>Hanya untuk senang senang</p>
-								<button className='btn btn-outline-primary btn-block'>Rent</button>
+					{this.state.lots.map(lot => {
+						return (
+							<div className='col-md-3'>
+								<div className='card text-left'>
+									<img className='card-img-top' src={`${process.env.PUBLIC_URL}/uploads/lots/${lot.image}`} alt='kwkwkw' />
+									<div className='card-body'>
+										<h4 className='card-title'>{lot.title}</h4>
+										<p className='card-text'>Location: {lot.location}</p>
+										<p className='card-text'>Contact: {lot.contact}</p>
+										<p className='card-text'>Status: {lot.status === "Available" ? <span className="text-success" >{lot.status}</span> : <span className="text-danger" >{lot.status}</span>} </p>
+										<button className='btn btn-outline-primary btn-block'>
+											Rent
+										</button>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
+						)
+					})}
 				</div>
 			</Fragment>
 		);
