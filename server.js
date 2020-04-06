@@ -50,7 +50,10 @@ const TransactionSchema = new mongoose.Schema({
 	rentedLot: { LotSchema },
 	total: Number,
 	status: String,
-	image: String
+	image: String,
+	bookedDate: String,
+	startedTime: String,
+	endedTime: String,
 });
 
 const Transaction = mongoose.model('Transaction', TransactionSchema);
@@ -180,6 +183,16 @@ app.put('/user/password/:id', (req, res) => {
 //
 // ───────────────────────────────────────────────────────── RENT ASSIGNMENTS ─────
 //
+
+app.put('/rent/lot-status/:id', (req,res) => {
+	Lot.findByIdAndUpdate(req.params.id, {status: req.body.status}, (err,status) => {
+		if(err){
+			console.log(err)
+		} else {
+			console.log(status)
+		}
+	})
+})
 
 app.post('/rent', (req, res) => {
 	Transaction.create({

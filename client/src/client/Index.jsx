@@ -24,9 +24,44 @@ export default class Index extends Component {
 			})
 			.catch((err) => console.log(err));
 	}
+	handleRentClick(data) {
+		window.location.assign('/booked-lot')
+		if (localStorage.getItem('Selected Lot')) {
+			alert('You only have one selected lot!')
+		} else {
+			localStorage.setItem('Selected Lot', JSON.stringify(data))
+		}
+	}
 	render() {
 		return (
 			<Fragment>
+				<nav style={{ height: "100px" }} className="navbar navbar-expand-md navbar-dark bg-dark">
+					<a className="navbar-brand" href="/">
+						Keep it Simple
+  					</a>
+					<div className="collapse navbar-collapse" id="collapsibleNavId">
+						<ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+							<li className="nav-item">
+								<form className="form-inline my-2 my-lg-0">
+									<input
+										style={{ width: "900px" }}
+										type="text"
+										className="form-control"
+										placeholder="Search.."
+										aria-label="Search.."
+										aria-describedby="basic-addon2"
+									/>
+									<div className="input-group-append">
+										<button className="btn btn-outline-light" type="button">
+											Search
+    										</button>
+									</div>
+								</form>
+							</li>
+						</ul>
+					</div>
+				</nav>
+
 				<Carousel>
 					<Carousel.Item>
 						<img style={{ height: '400px' }} className='d-block w-100' src={Picture1} alt='First slide' />
@@ -79,7 +114,7 @@ export default class Index extends Component {
 										<p className='card-text'>Location: {lot.location}</p>
 										<p className='card-text'>Contact: {lot.contact}</p>
 										<p className='card-text'>Status: {lot.status === "Available" ? <span className="text-success" >{lot.status}</span> : <span className="text-danger" >{lot.status}</span>} </p>
-										<button className='btn btn-outline-primary btn-block'>
+										<button onClick={() => this.handleRentClick(lot)} className='btn btn-outline-primary btn-block' disabled={lot.status === "Not Available"} >
 											Rent
 										</button>
 									</div>
