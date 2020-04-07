@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
 	const handleLogout = () => {
 		localStorage.clear();
+		window.location.assign('/login')
 	};
 
 	const isAdded = () => {
@@ -25,7 +26,7 @@ const Navbar = () => {
 				<li className='nav-item'>
 					<img
 						className='border rounded-circle border-danger'
-						style={{ width: '40px', height: '40px' }}
+						style={{ width: '32px', height: '32px', marginTop: "5px" }}
 						src={Logo}
 						alt='okok'
 					/>
