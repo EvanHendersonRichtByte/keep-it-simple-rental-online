@@ -1,12 +1,14 @@
-import React, { Component, Fragment, useState, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import PayModal from '../components/PayModal'
 import axios from 'axios'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 export default class BookedLot extends Component {
     constructor() {
         super()
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleModalStatus = this.handleModalStatus.bind(this)
-        this.handleTwoFunctions = this.handleTwoFunctions.bind(this)
+        this.handleTotalState = this.handleTotalState.bind(this)
+        this.handleFormSubmit = this.handleFormSubmit.bind(this)
         this.state = {
             userId: '',
             selectedLot: [],
@@ -40,8 +42,9 @@ export default class BookedLot extends Component {
 
     handleSelectedLot() {
         let selected = localStorage.getItem('Selected Lot')
+        let _id = localStorage.getItem('_id')
         if (selected) {
-            this.setState({ selectedLot: JSON.parse(selected) })
+            this.setState({ selectedLot: JSON.parse(selected), userId: JSON.parse(_id), status: "Used" })
         } else {
             alert('Please select a lot before continuing')
             window.location.assign('/')
@@ -66,8 +69,26 @@ export default class BookedLot extends Component {
         e.preventDefault();
         let formData = new FormData();
         formData.append('userId', this.state.userId)
-        formData.append('rentedLot', this.state.rentedLot)
-        formData.append('total')
+        formData.append('rentedLot', this.state.selectedLot)
+        formData.append('total', this.state.total)
+        formData.append('status', this.state.status)
+        formData.append('bookedDate', this.state.bookedDate)
+        formData.append('startedTime', this.state.startedTime)
+        formData.append('endedTime', this.state.endedTime)
+        axios.post('/rent', {
+            userId: this.state.userId,
+            rentedLot: this.state.selectedLot,
+            total: this.state.total,
+            status: this.state.status,
+            bookedDate: this.state.bookedDate,
+            startedTime: this.state.startedTime,
+            endedTime: this.state.endedTime
+        }).then(res => {
+            console.log(res)
+        }).catch(err => console.log(err))
+        axios.put('/rent/lot-status/' + this.state.selectedLot._id, {
+            status: "Not Available"
+        }).then(res => console.log(res)).catch(err => console.log(err))
         alert('Please contact to ' + this.state.selectedLot.contact + ' to discuss about renting this lot')
         window.location.assign('/booked-lot')
     }
@@ -105,10 +126,10 @@ export default class BookedLot extends Component {
                         <br />
                         <div className="row">
                             <div className="col-md-12">
-                                <form className="form-block">
+                                <form onSubmit={this.handleFormSubmit} className="form-block">
                                     <label htmlFor="endedTime">Until when you rent this lot?</label>
-                                    <input value={this.state.endedTime} onChange={this.handleInputChange} type="date" className="form-control col-md-8" name="endedTime" id="endedTime" />
-                                    <button className="border-top-0 btn btn-outline-primary btn-block col-md-8" disabled={this.state.selectedLot.status === "Not Available"} >Book now</button>
+                                    <input onClick={this.handleTotalState} value={this.state.endedTime} onChange={this.handleInputChange} type="date" className="form-control col-md-8" name="endedTime" id="endedTime" />
+                                    <button className="border-top-0 btn btn-outline-primary btn-block col-md-8" disabled={this.state.selectedLot.status === "Not Available" || isNaN(this.state.total)} >Book now</button>
                                 </form>
                             </div>
                             <div className="col-md-8 text-center">
@@ -118,11 +139,11 @@ export default class BookedLot extends Component {
                                         Total:
                                     </div>
                                     <div className="col-md-6">
-                                        <form onSubmit={this.handleFormSubmit} className="form-inline">
-                                            <button className="btn btn-outline-success">
-                                                Rent now
-                                            </button>
-                                        </form>
+                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">If Total is NaN please click the date again until it show up</Tooltip>}>
+                                            <span className="d-inline-block border rounded border-info">
+                                                {this.state.total === isNaN() ? <span>Please Select Appropriate Date</span> : <span>$ <span className="text-info">|</span> {this.state.total}</span>}
+                                            </span>
+                                        </OverlayTrigger>
                                     </div>
                                 </div>
                             </div>

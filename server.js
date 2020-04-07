@@ -47,7 +47,7 @@ const Lot = mongoose.model('Lot', LotSchema);
 
 const TransactionSchema = new mongoose.Schema({
 	userId: String,
-	rentedLot: { LotSchema },
+	rentedLot: [LotSchema],
 	total: Number,
 	status: String,
 	image: String,
