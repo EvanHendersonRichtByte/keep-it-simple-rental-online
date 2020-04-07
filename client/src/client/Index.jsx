@@ -46,15 +46,15 @@ export default class Index extends Component {
 									<input
 										style={{ width: "900px" }}
 										type="text"
-										className="form-control"
+										className="form-control border-right-0"
 										placeholder="Search.."
 										aria-label="Search.."
 										aria-describedby="basic-addon2"
 									/>
 									<div className="input-group-append">
-										<button className="btn btn-outline-light" type="button">
+										<button className="btn btn-outline-light border-left-0" type="button">
 											Search
-    										</button>
+    									</button>
 									</div>
 								</form>
 							</li>
@@ -87,19 +87,19 @@ export default class Index extends Component {
 						</Carousel.Caption>
 					</Carousel.Item>
 				</Carousel>
-				<div className='container'>
+				<div className='container' style={{marginTop: "100px", marginBottom: "100px"}}>
 					<div className='row'>
 						<div className='col text-center'>
-							<h1>Index</h1>
+							<h4>Made by Bootstrap</h4>
+							<p>Using open source library</p>
+						</div>
+						<div className='col text-center'>
+							<h4>Vision and Mission</h4>
 							<p>Non nihil maxime voluptate ut nesciunt id.</p>
 						</div>
 						<div className='col text-center'>
-							<h1>Index</h1>
-							<p>Non nihil maxime voluptate ut nesciunt id.</p>
-						</div>
-						<div className='col text-center'>
-							<h1>Index</h1>
-							<p>Non nihil maxime voluptate ut nesciunt id.</p>
+							<h4>Our Office</h4>
+							<p>Located on Area 51</p>
 						</div>
 					</div>
 				</div>

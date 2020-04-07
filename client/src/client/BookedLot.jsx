@@ -1,20 +1,31 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useState, useEffect } from 'react';
+import PayModal from '../components/PayModal'
+import axios from 'axios'
 export default class BookedLot extends Component {
     constructor() {
         super()
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleModalStatus = this.handleModalStatus.bind(this)
+        this.handleTwoFunctions = this.handleTwoFunctions.bind(this)
         this.state = {
             userId: '',
             selectedLot: [],
             total: 0,
             status: '',
+            bookedDate: `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()}-${new Date().getUTCDay()}`,
             startedTime: `${new Date().getUTCFullYear()}-${new Date().getUTCMonth()}-${new Date().getUTCDay()}`,
-            endedTime: ''
+            endedTime: '',
+            modalStatus: false,
         }
     }
 
+
     componentDidMount() {
         this.handleSelectedLot()
+    }
+
+    handleModalStatus() {
+        this.setState({ modalStatus: !this.state.modalStatus })
     }
 
     handleChangeSelectedLot() {
@@ -36,6 +47,31 @@ export default class BookedLot extends Component {
             window.location.assign('/')
         }
     }
+
+    handleTotalState() {
+        let endedTime = this.state.endedTime
+        let startedTime = this.state.startedTime
+        let totalTime = (endedTime.split("-")[2]) - startedTime.split("-")[2]
+        if (totalTime <= 0) {
+            alert('Please select appropriate date')
+            window.location.assign('/booked-lot')
+        } else {
+            this.setState({ total: totalTime * this.state.selectedLot.price })
+            console.log(this.state.total)
+        }
+
+    }
+
+    handleFormSubmit(e) {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append('userId', this.state.userId)
+        formData.append('rentedLot', this.state.rentedLot)
+        formData.append('total')
+        alert('Please contact to ' + this.state.selectedLot.contact + ' to discuss about renting this lot')
+        window.location.assign('/booked-lot')
+    }
+
     render() {
         return (
             <Fragment>
@@ -72,23 +108,21 @@ export default class BookedLot extends Component {
                                 <form className="form-block">
                                     <label htmlFor="endedTime">Until when you rent this lot?</label>
                                     <input value={this.state.endedTime} onChange={this.handleInputChange} type="date" className="form-control col-md-8" name="endedTime" id="endedTime" />
-                                    <button className="border-primary border-top-0 btn btn-block col-md-8" disabled={this.state.selectedLot.status === "Not Available"} >Book now</button>
+                                    <button className="border-top-0 btn btn-outline-primary btn-block col-md-8" disabled={this.state.selectedLot.status === "Not Available"} >Book now</button>
                                 </form>
                             </div>
                             <div className="col-md-8 text-center">
                                 <br />
-                                <div class="row">
+                                <div className="row">
                                     <div className="col-md-6">
-                                        <button className="btn btn-outline-success">
-                                            Pay now
-                                </button>
-
+                                        Total:
                                     </div>
                                     <div className="col-md-6">
-                                        <button className="btn btn-outline-danger">
-                                            Pay later
-                                </button>
-
+                                        <form onSubmit={this.handleFormSubmit} className="form-inline">
+                                            <button className="btn btn-outline-success">
+                                                Rent now
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -102,13 +136,12 @@ export default class BookedLot extends Component {
                 </div>
                 <div className="row" style={{ marginTop: "250px" }}>
                     <div className="col-md-12" >
-                        <button onClick={this.handleChangeSelectedLot} className="btn btn-outline-primary btn-block">
+                        <button onClick={this.handleTotalState} className="btn btn-outline-primary btn-block">
                             Change Selected Lot
                         </button>
                     </div>
-
                 </div>
-
+                <PayModal _id={this.state.selectedLot._id} modalStatus={this.state.modalStatus} handleModalStatus={this.handleModalStatus} />
             </Fragment>
         )
     }

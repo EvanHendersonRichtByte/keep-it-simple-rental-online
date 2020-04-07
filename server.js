@@ -184,9 +184,9 @@ app.put('/user/password/:id', (req, res) => {
 // ───────────────────────────────────────────────────────── RENT ASSIGNMENTS ─────
 //
 
-app.put('/rent/lot-status/:id', (req,res) => {
-	Lot.findByIdAndUpdate(req.params.id, {status: req.body.status}, (err,status) => {
-		if(err){
+app.put('/rent/lot-status/:id', (req, res) => {
+	Lot.findByIdAndUpdate(req.params.id, { status: req.body.status }, (err, status) => {
+		if (err) {
 			console.log(err)
 		} else {
 			console.log(status)
@@ -200,6 +200,9 @@ app.post('/rent', (req, res) => {
 		rentedLot: req.body.rentedLot,
 		total: req.body.total,
 		status: req.body.status,
+		bookedDate: req.body.bookedDate,
+		startedTime: req.body.startedTime,
+		endedTime: req.body.endedTime,
 	})
 }, (req, data) => {
 	try {
