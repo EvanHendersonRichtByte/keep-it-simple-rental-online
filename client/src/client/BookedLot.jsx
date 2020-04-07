@@ -87,7 +87,7 @@ export default class BookedLot extends Component {
             console.log(res)
         }).catch(err => console.log(err))
         axios.put('/rent/lot-status/' + this.state.selectedLot._id, {
-            status: "Not Available"
+            status: "Unavailable"
         }).then(res => console.log(res)).catch(err => console.log(err))
         alert('Please contact to ' + this.state.selectedLot.contact + ' to discuss about renting this lot')
         window.location.assign('/booked-lot')
@@ -129,7 +129,7 @@ export default class BookedLot extends Component {
                                 <form onSubmit={this.handleFormSubmit} className="form-block">
                                     <label htmlFor="endedTime">Until when you rent this lot?</label>
                                     <input onClick={this.handleTotalState} value={this.state.endedTime} onChange={this.handleInputChange} type="date" className="form-control col-md-8" name="endedTime" id="endedTime" />
-                                    <button className="border-top-0 btn btn-outline-primary btn-block col-md-8" disabled={this.state.selectedLot.status === "Not Available" || isNaN(this.state.total)} >Book now</button>
+                                    <button className="border-top-0 btn btn-outline-primary btn-block col-md-8" disabled={this.state.selectedLot.status === "Unavailable" || isNaN(this.state.total)} >Book now</button>
                                 </form>
                             </div>
                             <div className="col-md-8 text-center">

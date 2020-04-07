@@ -87,7 +87,7 @@ export default class Index extends Component {
 						</Carousel.Caption>
 					</Carousel.Item>
 				</Carousel>
-				<div className='container' style={{marginTop: "100px", marginBottom: "100px"}}>
+				<div className='container' style={{ marginTop: "100px", marginBottom: "100px" }}>
 					<div className='row'>
 						<div className='col text-center'>
 							<h4>Made by Bootstrap</h4>
@@ -114,7 +114,7 @@ export default class Index extends Component {
 										<p className='card-text'>Location: {lot.location}</p>
 										<p className='card-text'>Contact: {lot.contact}</p>
 										<p className='card-text'>Status: {lot.status === "Available" ? <span className="text-success" >{lot.status}</span> : <span className="text-danger" >{lot.status}</span>} </p>
-										<button onClick={() => this.handleRentClick(lot)} className='btn btn-outline-primary btn-block' disabled={lot.status === "Not Available"} >
+										<button onClick={() => this.handleRentClick(lot)} className='btn btn-outline-primary btn-block' disabled={lot.status === "Unavailable"} >
 											Rent
 										</button>
 									</div>
