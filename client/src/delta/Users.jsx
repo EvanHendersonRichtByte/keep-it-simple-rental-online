@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import AddUserForm from '../components/AddUserForm'
 import UpdateUserForm from '../components/UpdateUserForm'
+import { FiTrash2, FiEdit } from 'react-icons/fi'
 import axios from 'axios'
 export default class Users extends Component {
     constructor() {
@@ -11,7 +12,7 @@ export default class Users extends Component {
             users: [],
             modalStatus: false,
             updateModalStatus: false,
-            updateDataId: ''
+            sendedData: []
         }
     }
 
@@ -27,8 +28,8 @@ export default class Users extends Component {
         this.setState({ modalStatus: !this.state.modalStatus });
     }
 
-    handleUpdateModalStatus(_id) {
-        this.setState({ updateDataId: _id, updateModalStatus: !this.state.updateModalStatus })
+    handleUpdateModalStatus(data) {
+        this.setState({ sendedData: data, updateModalStatus: !this.state.updateModalStatus })
         console.log(this.state)
     }
 
@@ -50,7 +51,6 @@ export default class Users extends Component {
                             <th>Country</th>
                             <th>Phone Number</th>
                             <th>Role</th>
-                            <th>Zip</th>
                             <th>Image</th>
                             <th>Action</th>
                         </tr>
@@ -67,10 +67,9 @@ export default class Users extends Component {
                                     <td>{item.country ? <span>{item.country}</span> : <span>Haven't setup</span>}</td>
                                     <td>{item.phoneNumber ? <span>{item.phoneNumber}</span> : <span>Haven't setup</span>}</td>
                                     <td>{item.role}</td>
-                                    <td>{item.zip ? <span>{item.zip}</span> : <span>Haven't setup</span>}</td>
-                                    <td className="text-center"><img style={{ height: "120px" }} alt={item._id + "Preview"} src={`${process.env.PUBLIC_URL}/uploads/users/${item.image}`} /></td>
-                                    <td><button className="btn btn-outline-primary" onClick={() => this.handleUpdateModalStatus(item._id)}>Edit Data</button>
-                                        <button className="btn btn-outline-danger" onClick={() => this.handleDeleteUser(item._id)}>Delete Data</button></td>
+                                    <td className="text-center"><img style={{ height: "90px" }} alt={item._id + "Preview"} src={`${process.env.PUBLIC_URL}/uploads/users/${item.image}`} /></td>
+                                    <td><button className="btn btn text-primary" onClick={() => this.handleUpdateModalStatus(item)}><FiEdit /></button>
+                                        <button className="btn btn text-danger" onClick={() => this.handleDeleteUser(item._id)}><FiTrash2 /></button></td>
                                 </tr>
                             )
                         })}
@@ -79,7 +78,7 @@ export default class Users extends Component {
                 <button className="btn btn-outline-primary btn-block" onClick={this.handleModalStatus}>Add Data</button>
                 <AddUserForm modalStatus={this.state.modalStatus} handleModalStatus={this.handleModalStatus} />
                 <UpdateUserForm
-                    _id={this.state.updateDataId}
+                    sendedData={this.state.sendedData}
                     updateModalStatus={this.state.updateModalStatus}
                     handleUpdateModalStatus={this.handleUpdateModalStatus}
                 />

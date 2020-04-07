@@ -43,6 +43,11 @@ const Navbar = () => {
 				return (
 					<Fragment>
 						<li className='nav-item'>
+							<Link className='nav-link' to='/booked-lot'>
+								Booked Lot
+						</Link>
+						</li>
+						<li className='nav-item'>
 							<Link className='nav-link' to='/profile'>
 								My profile
 							</Link>
@@ -95,11 +100,7 @@ const Navbar = () => {
 							Home <span className='sr-only'>(current)</span>
 						</a>
 					</li>
-					<li className='nav-item'>
-						<Link className='nav-link' to='/booked-lot'>
-							Booked Lot
-						</Link>
-					</li>
+
 				</ul>
 
 				<ul className='navbar-nav'>

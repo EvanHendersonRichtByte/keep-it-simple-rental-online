@@ -50,7 +50,7 @@ export default class AddUserForm extends Component {
         formData.append('image', this.state.image);
         const config = { headers: { 'content-type': 'multipart/form-data' } };
         axios.post('/admin/user', formData, config).then(res => {
-            window.location.assign('/lot')
+            window.location.assign('/users')
         }).catch((err) => console.log(err));
     }
 

@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 export default class UpdateUserForm extends Component {
     constructor(props) {
         super(props);
-        this.handlePreviousData = this.handlePreviousData.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -20,15 +19,12 @@ export default class UpdateUserForm extends Component {
             address: '',
             country: '',
             phoneNumber: '',
-            role: '',
-            status: '',
+            role: 'User',
+            status: 'Active',
             image: null
         };
     }
 
-    componentDidMount() {
-        this.handlePreviousData()
-    }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
@@ -36,27 +32,6 @@ export default class UpdateUserForm extends Component {
 
     handleFileChange(e) {
         this.setState({ image: e.target.files[0] });
-    }
-
-    handlePreviousData() {
-        axios.get('/user/' + this.props._id).then((res) => {
-            console.log(res.data[0]);
-            this.setState({
-                _id: res.data[0]._id,
-                username: res.data[0].username,
-                password: res.data[0].password,
-                firstName: res.data[0].firstName,
-                lastName: res.data[0].lastName,
-                description: res.data[0].description,
-                email: res.data[0].email,
-                age: res.data[0].age,
-                address: res.data[0].address,
-                country: res.data[0].country,
-                role: res.data[0].role,
-                status: res.data[0].status,
-            });
-            console.log(this.state);
-        });
     }
 
     handleFormSubmit(e) {
@@ -77,7 +52,7 @@ export default class UpdateUserForm extends Component {
         formData.append('status', this.state.status);
         formData.append('image', this.state.image);
         const config = { headers: { 'content-type': 'multipart/form-data' } };
-        axios.put('/admin/user/' + this.state._id, formData, config).then(res => {
+        axios.put('/admin/user/' + this.props.sendedData._id, formData, config).then(res => {
             window.location.assign('/users')
         }).catch((err) => console.log(err));
     }
@@ -86,6 +61,7 @@ export default class UpdateUserForm extends Component {
         return (
             <Fragment>
                 <Modal ariaHideApp={false} isOpen={this.props.updateModalStatus} onRequestClose={this.props.handleUpdateModalStatus}>
+                    <button onClick={() => console.log(this.state)}>get</button>
                     <div className='container-fluid'>
                         <form onSubmit={this.handleFormSubmit}>
                             <div className='row d-block'>
@@ -98,6 +74,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='username'
                                         id='username'
+                                        placeholder={this.props.sendedData.username}
                                         required
                                     />
                                 </div>
@@ -112,6 +89,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='password'
                                         id='password'
+                                        placeholder={this.props.sendedData.password}
                                         required
                                     />
                                 </div>
@@ -126,6 +104,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='firstName'
                                         id='firstName'
+                                        placeholder={this.props.sendedData.firstName}
                                         required
                                     />
                                 </div>
@@ -140,6 +119,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='lastName'
                                         id='lastName'
+                                        placeholder={this.props.sendedData.lastName}
                                         required
                                     />
                                 </div>
@@ -154,6 +134,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='description'
                                         id='description'
+                                        placeholder={this.props.sendedData.description}
                                         required
                                     />
                                 </div>
@@ -168,6 +149,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='email'
                                         id='email'
+                                        placeholder={this.props.sendedData.email}
                                         required
                                     />
                                 </div>
@@ -182,6 +164,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='age'
                                         id='age'
+                                        placeholder={this.props.sendedData.age}
                                         required
                                     />
                                 </div>
@@ -196,6 +179,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='address'
                                         id='address'
+                                        placeholder={this.props.sendedData.address}
                                         required
                                     />
                                 </div>
@@ -210,6 +194,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='country'
                                         id='country'
+                                        placeholder={this.props.sendedData.country}
                                         required
                                     />
                                 </div>
@@ -224,6 +209,7 @@ export default class UpdateUserForm extends Component {
                                         className='form-control'
                                         name='phoneNumber'
                                         id='phoneNumber'
+                                        placeholder={this.props.sendedData.phoneNumber}
                                         required
                                     />
                                 </div>
@@ -231,29 +217,19 @@ export default class UpdateUserForm extends Component {
                             <div className='row d-block'>
                                 <div className='form-group'>
                                     <label htmlFor='role'>Role</label>
-                                    <input
-                                        value={this.state.role}
-                                        onChange={this.handleChange}
-                                        type='text'
-                                        className='form-control'
-                                        name='role'
-                                        id='role'
-                                        required
-                                    />
+                                    <select onChange={this.handleChange} name="role" className="form-control" value={this.state.role}>
+                                        <option value="User">User</option>
+                                        <option value="Admin">Admin</option>
+                                    </select>
                                 </div>
                             </div>
                             <div className='row d-block'>
                                 <div className='form-group'>
                                     <label htmlFor='status'>Status</label>
-                                    <input
-                                        value={this.state.status}
-                                        onChange={this.handleChange}
-                                        type='text'
-                                        className='form-control'
-                                        name='status'
-                                        id='status'
-                                        required
-                                    />
+                                    <select onChange={this.handleChange} name="status" className="form-control" value={this.state.status}>
+                                        <option value="Active">Active</option>
+                                        <option value="Passive">Passive</option>
+                                    </select>
                                 </div>
                             </div>
                             <div className='row d-block'>
