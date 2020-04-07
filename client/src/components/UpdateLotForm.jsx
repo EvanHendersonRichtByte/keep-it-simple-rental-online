@@ -9,18 +9,20 @@ export default class UpdateLotForm extends Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handlePreviousData = this.handlePreviousData.bind(this);
         this.state = {
-            _id: '',
-            title: '',
+            _id: props.sendedData._id,
+            title: props.sendedData.title,
             location: '',
             description: '',
             contact: '',
             price: '',
             status: '',
+            duration: 'Available',
             image: null,
         };
     }
 
     componentDidMount() {
+        console.log(this.props)
         this.handlePreviousData();
     }
 
@@ -33,19 +35,11 @@ export default class UpdateLotForm extends Component {
     }
 
     handlePreviousData() {
-        axios.get('/lot/' + this.props._id).then((res) => {
-            console.log(res.data[0]);
+        this.props.sendedData.forEach(data => {
             this.setState({
-                _id: res.data[0]._id,
-                title: res.data[0].title,
-                location: res.data[0].location,
-                description: res.data[0].description,
-                contact: res.data[0].contact,
-                price: res.data[0].price,
-                status: res.data[0].status,
-            });
-            console.log(this.state);
-        });
+                title: data.title
+            })
+        })
     }
 
     handleFormSubmit(e) {
@@ -58,11 +52,12 @@ export default class UpdateLotForm extends Component {
         formData.append('contact', this.state.contact);
         formData.append('price', this.state.price);
         formData.append('status', this.state.status);
+        formData.append('duration', this.state.duration);
         formData.append('image', this.state.image);
         const config = { headers: { 'content-type': 'multipart/form-data' } };
 
         axios
-            .put('/lot/' + this.state._id, formData, config)
+            .put('/lot/' + this.props.sendedData._id, formData, config)
             .then((res) => {
                 console.log(res)
                 window.location.assign('/lot')
@@ -78,18 +73,20 @@ export default class UpdateLotForm extends Component {
                     isOpen={this.props.updateModalStatus}
                     onRequestClose={this.props.handleUpdateModalStatus}
                 >
+                    <button className="btn btn-outline-primary" onClick={() => console.log(this.state)} >Get</button>
                     <div className='container-fluid'>
                         <form onSubmit={this.handleFormSubmit}>
                             <div className='row d-block'>
                                 <div className='form-group'>
                                     <label htmlFor='title'>Title</label>
                                     <input
-                                        value={this.state.title}
+                                        value={this.props.title}
                                         onChange={this.handleChange}
                                         type='text'
                                         className='form-control'
                                         name='title'
                                         id='title'
+                                        placeholder={this.props.sendedData.title}
                                         required
                                     />
                                 </div>
@@ -104,6 +101,7 @@ export default class UpdateLotForm extends Component {
                                         className='form-control'
                                         name='location'
                                         id='location'
+                                        placeholder={this.props.sendedData.location}
                                         required
                                     />
                                 </div>
@@ -118,6 +116,7 @@ export default class UpdateLotForm extends Component {
                                         className='form-control'
                                         name='description'
                                         id='description'
+                                        placeholder={this.props.sendedData.description}
                                         required
                                     />
                                 </div>
@@ -132,6 +131,7 @@ export default class UpdateLotForm extends Component {
                                         className='form-control'
                                         name='contact'
                                         id='contact'
+                                        placeholder={this.props.sendedData.contact}
                                         required
                                     />
                                 </div>
@@ -146,6 +146,7 @@ export default class UpdateLotForm extends Component {
                                         className='form-control'
                                         name='price'
                                         id='price'
+                                        placeholder={this.props.sendedData.price}
                                         required
                                     />
                                 </div>
@@ -153,13 +154,23 @@ export default class UpdateLotForm extends Component {
                             <div className='row d-block'>
                                 <div className='form-group'>
                                     <label htmlFor='status'>Status</label>
+                                    <select onChange={this.handleChange} name="status" className="form-control" value={this.state.status}>
+                                        <option value="Available">Available</option>
+                                        <option value="Unavailable">Unavailable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='row d-block'>
+                                <div className='form-group'>
+                                    <label htmlFor='duration'>Duration</label>
                                     <input
-                                        value={this.state.status}
+                                        value={this.state.duration}
                                         onChange={this.handleChange}
                                         type='text'
                                         className='form-control'
-                                        name='status'
-                                        id='status'
+                                        name='duration'
+                                        id='duration'
+                                        placeholder={this.props.sendedData.duration}
                                         required
                                     />
                                 </div>

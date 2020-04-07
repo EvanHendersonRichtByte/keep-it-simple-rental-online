@@ -7,19 +7,26 @@ export default class AddLotForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this)
         this.state = {
             title: '',
             location: '',
             description: '',
             contact: '',
             price: '',
-            status: '',
+            status: 'Available',
+            duration: '',
             image: null,
         };
     }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleSelectChange(e) {
+        this.setState({ status: e.target.value })
+        console.log(this.state)
     }
 
     handleFileChange(e) {
@@ -34,7 +41,8 @@ export default class AddLotForm extends Component {
         formData.append('description', this.state.description);
         formData.append('contact', this.state.contact);
         formData.append('price', this.state.price);
-        formData.append('status', "Available");
+        formData.append('status', this.state.status);
+        formData.append('duration', this.state.duration);
         formData.append('image', this.state.image);
         const config = { headers: { 'content-type': 'multipart/form-data' } };
         axios.post('/lot', formData, config).then(res => {
@@ -114,6 +122,29 @@ export default class AddLotForm extends Component {
                                         className='form-control'
                                         name='price'
                                         id='price'
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className='row d-block'>
+                                <div className='form-group'>
+                                    <label htmlFor='status'>Status</label>
+                                    <select onChange={this.handleSelectChange} className="form-control" value={this.state.status}>
+                                        <option value="Available">Available</option>
+                                        <option value="Unavailable">Unavailable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='row d-block'>
+                                <div className='form-group'>
+                                    <label htmlFor='duration'>Duration</label>
+                                    <input
+                                        value={this.state.duration}
+                                        onChange={this.handleChange}
+                                        type='text'
+                                        className='form-control'
+                                        name='duration'
+                                        id='duration'
                                         required
                                     />
                                 </div>

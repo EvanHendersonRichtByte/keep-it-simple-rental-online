@@ -40,6 +40,7 @@ const LotSchema = new mongoose.Schema({
 	contact: Number,
 	price: String,
 	status: String,
+	duration: String,
 	image: String
 });
 
@@ -51,7 +52,6 @@ const TransactionSchema = new mongoose.Schema({
 	total: Number,
 	status: String,
 	image: String,
-	bookedDate: String,
 	startedTime: String,
 	endedTime: String,
 });
@@ -262,6 +262,7 @@ app.post('/lot', (req, res) => {
 			contact: req.body.contact,
 			price: req.body.price,
 			status: req.body.status,
+			duration: req.body.duration,
 			image: req.file.filename
 		}, (err, data) => {
 			try {
@@ -294,6 +295,7 @@ app.put('/lot/:id', (req, res) => {
 				contact: req.body.contact,
 				price: req.body.price,
 				status: req.body.status,
+				duration: req.body.duration,
 				image: req.file.filename
 			},
 			(err, updatedLot) => {

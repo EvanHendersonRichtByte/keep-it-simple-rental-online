@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import AddLotForm from '../components/AddLotForm'
+import { FiTrash2, FiEdit } from 'react-icons/fi'
 import UpdateLotForm from '../components/UpdateLotForm'
 import axios from 'axios'
 export default class Lot extends Component {
@@ -11,7 +12,8 @@ export default class Lot extends Component {
             lots: [],
             modalStatus: false,
             updateModalStatus: false,
-            updateDataId: ''
+            sendedData: []
+            // updateDataId: ''
         }
     }
 
@@ -31,8 +33,8 @@ export default class Lot extends Component {
         this.setState({ modalStatus: !this.state.modalStatus });
     }
 
-    handleUpdateModalStatus(_id) {
-        this.setState({ updateDataId: _id, updateModalStatus: !this.state.updateModalStatus })
+    handleUpdateModalStatus(item) {
+        this.setState({ sendedData: item, updateModalStatus: !this.state.updateModalStatus })
     }
 
     handleDeleteLot(_id) {
@@ -51,6 +53,7 @@ export default class Lot extends Component {
                             <th>Contact</th>
                             <th>Price</th>
                             <th>Status</th>
+                            <th>Duration</th>
                             <th>Image</th>
                             <th>Action</th>
                         </tr>
@@ -65,9 +68,10 @@ export default class Lot extends Component {
                                     <td>{item.contact}</td>
                                     <td>{item.price}</td>
                                     <td>{item.status}</td>
+                                    <td>{item.duration}</td>
                                     <td className="text-center"><img style={{ height: "120px" }} alt={item._id + "Preview"} src={`${process.env.PUBLIC_URL}/uploads/lots/${item.image}`} /></td>
-                                    <td><button className="btn btn-outline-primary" onClick={() => this.handleUpdateModalStatus(item._id)}>Edit Data</button>
-                                        <button className="btn btn-outline-danger" onClick={() => this.handleDeleteLot(item._id)}>Delete Data</button></td>
+                                    <td><button className="btn btn text-primary" style={{ marginRight: "5px" }} onClick={() => this.handleUpdateModalStatus(item)}><FiEdit /></button>
+                                        <button className="tn btn text-danger" onClick={() => this.handleDeleteLot(item._id)}><FiTrash2 /></button></td>
                                 </tr>
                             )
                         })}
@@ -76,7 +80,7 @@ export default class Lot extends Component {
                 <button className="btn btn-outline-primary btn-block" onClick={this.handleModalStatus}>Add Data</button>
                 <AddLotForm modalStatus={this.state.modalStatus} handleModalStatus={this.handleModalStatus} />
                 <UpdateLotForm
-                    _id={this.state.updateDataId}
+                    sendedData={this.state.sendedData}
                     updateModalStatus={this.state.updateModalStatus}
                     handleUpdateModalStatus={this.handleUpdateModalStatus}
                 />
