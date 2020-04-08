@@ -7,7 +7,6 @@ export default class AddLotForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this)
         this.state = {
             title: '',
             location: '',
@@ -22,11 +21,6 @@ export default class AddLotForm extends Component {
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }
-
-    handleSelectChange(e) {
-        this.setState({ status: e.target.value })
-        console.log(this.state)
     }
 
     handleFileChange(e) {
@@ -129,7 +123,7 @@ export default class AddLotForm extends Component {
                             <div className='row d-block'>
                                 <div className='form-group'>
                                     <label htmlFor='status'>Status</label>
-                                    <select onChange={this.handleSelectChange} className="form-control" value={this.state.status}>
+                                    <select onChange={this.handleChange} name="status" className="form-control" value={this.state.status}>
                                         <option value="Available">Available</option>
                                         <option value="Unavailable">Unavailable</option>
                                     </select>

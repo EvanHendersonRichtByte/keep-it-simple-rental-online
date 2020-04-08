@@ -13,7 +13,6 @@ export default class Lot extends Component {
             modalStatus: false,
             updateModalStatus: false,
             sendedData: []
-            // updateDataId: ''
         }
     }
 
