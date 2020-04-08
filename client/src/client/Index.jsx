@@ -25,7 +25,7 @@ export default class Index extends Component {
 			.catch((err) => console.log(err));
 	}
 	handleRentClick(data) {
-		window.location.assign('/booked-lot')
+		window.location.assign('/selected-lot')
 		if (localStorage.getItem('Selected Lot')) {
 			alert('You only have one selected lot!')
 		} else {

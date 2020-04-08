@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-
+import PayModal from '../components/PayModal'
 export default class BookedLot extends Component {
     constructor() {
         super();
         this.handleBookedLot = this.handleBookedLot.bind(this);
+        this.handleModalStatus = this.handleModalStatus.bind(this)
         this.state = {
             _id: '',
             userId: '',
@@ -12,8 +13,14 @@ export default class BookedLot extends Component {
             total: 0,
             status: '',
             startedTime: '',
-            endedTime: ''
+            endedTime: '',
+            image: '',
+            modalStatus: false
         };
+    }
+
+    handleModalStatus() {
+        this.setState({ modalStatus: !this.state.modalStatus })
     }
 
     componentDidMount() {
@@ -35,9 +42,9 @@ export default class BookedLot extends Component {
                         total: response.total,
                         status: response.status,
                         startedTime: response.startedTime,
-                        endedTime: response.endedTime
+                        endedTime: response.endedTime,
+                        image: response.image
                     });
-                    console.log(response)
                 })
                 .catch((err) => console.log(err));
         } else {
@@ -83,7 +90,7 @@ export default class BookedLot extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-md-4 text-center">
+                                <div className="col-md-4 d-flex justify-content-center text-center">
                                     <div className="row">
                                         <div className="col-md-6">
                                             Total
@@ -92,7 +99,7 @@ export default class BookedLot extends Component {
                                             {this.state.total}
                                         </div>
                                         <div className="col-md-12">
-                                            <button className="btn btn-outline-success btn-block" disabled={this.state.image} >Pay Now</button>
+                                            <button className="btn btn-sm btn-outline-success btn-block" onClick={this.handleModalStatus} disabled={this.state.image}>Pay Rent</button>
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +108,7 @@ export default class BookedLot extends Component {
                                 <div className="col-md-12">
                                     {this.state.activeLot.map(hehe => {
                                         return (
-                                            <span>{hehe.description}</span>
+                                            <span key={hehe._id}>{hehe.description}</span>
                                         )
                                     })}
                                 </div>
@@ -109,6 +116,7 @@ export default class BookedLot extends Component {
                         </div>
                     );
                 })}
+                <PayModal modalStatus={this.state.modalStatus} handleModalStatus={this.handleModalStatus} _id={this.state._id} />
             </Fragment>
         );
     }

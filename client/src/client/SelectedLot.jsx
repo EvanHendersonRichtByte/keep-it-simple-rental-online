@@ -33,7 +33,7 @@ export default class SelectedLot extends Component {
 
         let duration = this.state.selectedLot.duration.split(" ")[0]
         this.setState({
-            endedTime: `${day + duration}-${month}-${year}`
+            endedTime: `${parseInt(day) + parseInt(duration)}-${month}-${year}`
         })
     }
 
@@ -90,7 +90,7 @@ export default class SelectedLot extends Component {
             status: "Unavailable"
         }).then(res => console.log(res)).catch(err => console.log(err))
         alert('Please contact to ' + this.state.selectedLot.contact + ' to discuss about renting this lot')
-        window.location.assign('/')
+        window.location.assign('/booked-lot')
     }
 
     render() {

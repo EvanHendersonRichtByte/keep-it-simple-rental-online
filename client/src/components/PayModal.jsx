@@ -23,7 +23,7 @@ export default class PayModal extends Component {
         const config = { headers: { 'content-type': 'multipart/form-data' } }
         axios.put('/rent/' + this.props._id, formData, config).then(res => {
             alert('Your proof has successfully sended')
-            window.location.assign('/')
+            window.location.assign('/booked-lot')
         }).catch((err) => console.log(err));
     }
 

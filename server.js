@@ -222,10 +222,34 @@ app.get('/rent/user/:id', (req, res) => {
 	})
 })
 
+app.get('/rent', (req, res) => {
+	Transaction.find({}, (err, transactions) => {
+		try {
+			res.send(transactions)
+		} catch (error) {
+			console.log(error)
+		}
+	})
+})
+
 app.put('/rent/:id', (req, res) => {
 	uploadTransactionStorage(req, res, (err) => {
 		Transaction.findByIdAndUpdate(req.params.id, {
 			image: req.file.filename
+		}, (err, update) => {
+			try {
+				console.log(update)
+			} catch (error) {
+				console.log(error)
+			}
+		})
+	})
+})
+
+app.put('/rent/status/:id', (req, res) => {
+	uploadTransactionStorage(req, res, (err) => {
+		Transaction.findByIdAndUpdate(req.params.id, {
+			image: req.file.filename, status: req.body.status
 		}, (err, update) => {
 			try {
 				console.log(update)
