@@ -40,6 +40,7 @@ const LotSchema = new mongoose.Schema({
 	contact: Number,
 	price: String,
 	status: String,
+	duration: String,
 	image: String
 });
 
@@ -47,10 +48,12 @@ const Lot = mongoose.model('Lot', LotSchema);
 
 const TransactionSchema = new mongoose.Schema({
 	userId: String,
-	rentedLot: { LotSchema },
+	rentedLot: [LotSchema],
 	total: Number,
 	status: String,
-	image: String
+	image: String,
+	startedTime: String,
+	endedTime: String,
 });
 
 const Transaction = mongoose.model('Transaction', TransactionSchema);
@@ -181,12 +184,25 @@ app.put('/user/password/:id', (req, res) => {
 // ───────────────────────────────────────────────────────── RENT ASSIGNMENTS ─────
 //
 
+app.put('/rent/lot-status/:id', (req, res) => {
+	Lot.findByIdAndUpdate(req.params.id, { status: req.body.status }, (err, status) => {
+		if (err) {
+			console.log(err)
+		} else {
+			console.log(status)
+		}
+	})
+})
+
 app.post('/rent', (req, res) => {
 	Transaction.create({
 		userId: req.body.userId,
 		rentedLot: req.body.rentedLot,
 		total: req.body.total,
 		status: req.body.status,
+		bookedDate: req.body.bookedDate,
+		startedTime: req.body.startedTime,
+		endedTime: req.body.endedTime,
 	})
 }, (req, data) => {
 	try {
@@ -206,10 +222,34 @@ app.get('/rent/user/:id', (req, res) => {
 	})
 })
 
+app.get('/rent', (req, res) => {
+	Transaction.find({}, (err, transactions) => {
+		try {
+			res.send(transactions)
+		} catch (error) {
+			console.log(error)
+		}
+	})
+})
+
 app.put('/rent/:id', (req, res) => {
 	uploadTransactionStorage(req, res, (err) => {
 		Transaction.findByIdAndUpdate(req.params.id, {
 			image: req.file.filename
+		}, (err, update) => {
+			try {
+				console.log(update)
+			} catch (error) {
+				console.log(error)
+			}
+		})
+	})
+})
+
+app.put('/rent/status/:id', (req, res) => {
+	uploadTransactionStorage(req, res, (err) => {
+		Transaction.findByIdAndUpdate(req.params.id, {
+			image: req.file.filename, status: req.body.status
 		}, (err, update) => {
 			try {
 				console.log(update)
@@ -238,14 +278,24 @@ app.delete('/rent/:id', (req, res) => {
 // ───────────────────────────────────────────────────────── LOT MANIPULATION ─────
 //
 app.post('/lot', (req, res) => {
-	Lot.create({
-		title: req.body.title,
-		location: req.body.location,
-		description: req.body.description,
-		contact: req.body.contact,
-		price: req.body.price,
-		status: req.body.status
-	});
+	uploadLotStorage(req, res, (err) => {
+		Lot.create({
+			title: req.body.title,
+			location: req.body.location,
+			description: req.body.description,
+			contact: req.body.contact,
+			price: req.body.price,
+			status: req.body.status,
+			duration: req.body.duration,
+			image: req.file.filename
+		}, (err, data) => {
+			try {
+				console.log(data)
+			} catch (error) {
+				console.log(error)
+			}
+		});
+	})
 });
 
 app.get('/lot', (req, res) => {
@@ -259,24 +309,28 @@ app.get('/lot', (req, res) => {
 });
 
 app.put('/lot/:id', (req, res) => {
-	Lot.findByIdAndUpdate(
-		req.params.id,
-		{
-			title: req.body.title,
-			location: req.body.location,
-			description: req.body.description,
-			contact: req.body.contact,
-			price: req.body.price,
-			status: req.body.status
-		},
-		(err, updatedLot) => {
-			try {
-				res.send(updatedLot);
-			} catch (error) {
-				console.log(error);
+	uploadLotStorage(req, res, (err) => {
+		Lot.findByIdAndUpdate(
+			req.params.id,
+			{
+				title: req.body.title,
+				location: req.body.location,
+				description: req.body.description,
+				contact: req.body.contact,
+				price: req.body.price,
+				status: req.body.status,
+				duration: req.body.duration,
+				image: req.file.filename
+			},
+			(err, updatedLot) => {
+				try {
+					res.send(updatedLot);
+				} catch (error) {
+					console.log(error);
+				}
 			}
-		}
-	);
+		);
+	})
 });
 
 app.delete('/lot/:id', (req, res) => {

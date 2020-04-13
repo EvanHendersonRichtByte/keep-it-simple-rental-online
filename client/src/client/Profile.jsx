@@ -394,6 +394,7 @@ export default class Profile extends Component {
 									</div>
 								</div>
 							</div>
+							<br />
 						</div>
 						<button className='btn btn-outline-warning btn-block'>Change Password</button>
 					</form>

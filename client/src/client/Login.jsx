@@ -31,6 +31,7 @@ export default class Login extends Component {
 				if (res.data) {
 					localStorage.setItem('_id', JSON.stringify(res.data._id));
 					localStorage.setItem('Role', JSON.stringify(res.data.role));
+					localStorage.setItem('Image', JSON.stringify(res.data.image));
 					if (res.data.role === "User") {
 						window.location.assign('/')
 					} else if (res.data.role === "Admin") {
